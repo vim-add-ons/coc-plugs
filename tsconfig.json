@@ -10,7 +10,10 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "pretty": true,
+    "checkJs": true,
+    "allowJs": true
   },
   "include": ["src"]
 }

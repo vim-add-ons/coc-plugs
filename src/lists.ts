@@ -1,4 +1,18 @@
 import { BasicList, ListAction, ListContext, ListItem, Neovim, workspace } from 'coc.nvim';
+import {colors} from './colors'
+
+export function getAllFuncs(toCheck) {
+    var props : string[] = [];
+    var obj = toCheck;
+    do {
+        props = props.concat(Object.getOwnPropertyNames(obj));
+    } while (obj = Object.getPrototypeOf(obj));
+
+    return props.sort().filter(function(e, i, arr) {
+        if (e!=arr[i+1]) return true;
+        // if (e!=arr[i+1] && typeof toCheck[e] == 'function') return true;
+    }).join(', ');
+}
 
 export default class PlugsList extends BasicList {
   public readonly name = 'plugs_list';
@@ -44,17 +58,21 @@ export default class PlugsList extends BasicList {
       }
       let list = await nvim.eval(`split(execute("verbose ${state}map"),"\n")`);
 
-      await nvim.command(`echom '${list[1]}'`,true);
+      let keys = getAllFuncs(list)
+      await nvim.command(`echom "The value: ${keys}"`,true);
       let res : ListItem[] = [];
-      for (let idx=0; idx<10; idx++) {
+      for (let idx=0; idx<1000; idx++) {
           let line = list[idx]
           let ms = line.match(regex);
           if (ms) {
-              //let colors = my_require(3)
               let [, state, key, more] = ms;
+              //let cola = colors.styles2?.magenta?.get?.()?.(state)
+              let colb = colors.styles2?.blue?.get?.()?.(key)
+              let cola = colors.styles2?.magenta?.get?.()?.(state)
+              await nvim.command(`echom "3: The value: ${cola} ${colb}"`,true);
               let item : ListItem = {
-                  //label: ` ${colors.magenta(state)}\t${colors.blue(key)}\t${more}`,
-                  label: ` ${state}\t${key}\t${more}`,
+                  label: ` ${cola}\t${colb}\t${more}`,
+                  //label: ` ${state}\t${key}\t${more}`,
                   filterText: `${key} ${more}`,
                   data: {
                       state,
