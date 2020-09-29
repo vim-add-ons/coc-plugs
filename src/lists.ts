@@ -58,18 +58,17 @@ export default class PlugsList extends BasicList {
       }
       let list = await nvim.eval(`split(execute("verbose ${state}map"),"\n")`);
 
-      let keys = getAllFuncs(list)
-      await nvim.command(`echom "The value: ${keys}"`,true);
+      //let keys = getAllFuncs(list)
+      //await nvim.command(`echom "The value: ${keys}"`,true);
       let res : ListItem[] = [];
       for (let idx=0; idx<1000; idx++) {
           let line = list[idx]
           let ms = line.match(regex);
           if (ms) {
               let [, state, key, more] = ms;
-              //let cola = colors.styles2?.magenta?.get?.()?.(state)
               let colb = colors.styles2?.blue?.get?.()?.(key)
               let cola = colors.styles2?.magenta?.get?.()?.(state)
-              await nvim.command(`echom "3: The value: ${cola} ${colb}"`,true);
+              //await nvim.command(`echom "3: The value: ${cola} ${colb}"`,true);
               let item : ListItem = {
                   label: ` ${cola}\t${colb}\t${more}`,
                   //label: ` ${state}\t${key}\t${more}`,
